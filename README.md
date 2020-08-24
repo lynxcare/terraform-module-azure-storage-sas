@@ -7,6 +7,11 @@ This module avoids that and still allows you to rotate the SAS token. You simply
 
 Note that you should run `terraform apply` to actually rotate the token when needed.
 
+[![maintained by dataroots](https://img.shields.io/badge/maintained%20by-dataroots-%2300b189)](https://dataroots.io)
+[![Terraform 0.13](https://img.shields.io/badge/terraform-0.13-%23623CE4)](https://www.terraform.io)
+[![Terraform Registry](https://img.shields.io/badge/terraform-registry-%23623CE4)](https://registry.terraform.io/modules/datarootsio/azure-storage-sas/module)
+[![build](https://github.com/datarootsio/terraform-module-azure-storage-sas/workflows/build/badge.svg)](https://github.com/datarootsio/terraform-module-azure-storage-sas/actions?query=workflow%3Abuild)
+
 ## Usage
 
 The example below creates a resource group, a storage account, a blob container and a SAS token. The token rotates yearly and is valid for 72h after the next rotation point. The token has all permissions in the storage container.
@@ -31,7 +36,7 @@ resource "azurerm_storage_container" "container" {
 }
 
 module "storage-sas" {
-  source                 = "."
+  source                 = "datarootsio/azure-storage-sas/module"
   rotation_years         = 1
   rotation_margin        = "72h"
   storage_account_name   = azurerm_storage_account.sa.name
