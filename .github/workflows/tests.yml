@@ -1,0 +1,71 @@
+name: "tests"
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+env:
+  slack_channel: terraform-module-azure-storage-sas
+jobs:
+  validate:
+    name: "Validate"
+    runs-on: ubuntu-latest
+    steps:
+
+      - id: slack
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: ${{ env.slack_channel }}
+          status: STARTED
+          color: warning
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - name: "Checkout"
+        uses: actions/checkout@master
+
+      - name: Terraform Init
+        run: terraform init -backend=false
+
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: tflint
+        run: docker run --rm -v $(pwd):/data -t wata727/tflint
+
+      - name: Bump version and push tag
+        if: github.event_name != 'pull_request'
+        uses: anothrNick/github-tag-action@1.22.0
+        env:
+          DEFAULT_BUMP: patch
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          RELEASES_BRANCHES: master
+        id: bump_version
+
+      - id: slack-success
+        if: success()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: ${{ env.slack_channel }}
+          status: SUCCESS
+          color: good
+          message_id: ${{ steps.slack.outputs.message_id }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - id: slack-failure
+        if: failure()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: ${{ env.slack_channel }}
+          status: FAILED
+          color: danger
+          message_id: ${{ steps.slack.outputs.message_id }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
