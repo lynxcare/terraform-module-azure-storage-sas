@@ -1,4 +1,4 @@
-name: "tests"
+name: "build"
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ env:
   slack_channel: terraform-module-azure-storage-sas
 jobs:
   validate:
-    name: "Validate"
+    name: "Validate and publish"
     runs-on: ubuntu-latest
     steps:
 

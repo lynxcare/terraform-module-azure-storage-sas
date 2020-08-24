@@ -7,7 +7,7 @@ resource "time_static" "start" {
 }
 
 resource "time_rotating" "end" {
-  base_rfc3339     = time_static.start.rfc3339
+  rfc3339          = time_static.start.rfc3339
   rotation_days    = var.rotation_days
   rotation_hours   = var.rotation_hours
   rotation_minutes = var.rotation_minutes
