@@ -52,7 +52,7 @@ func TestRotationEvery3MinutesWith2MinuteMargin(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	tempTestFolder := test_structure.CopyTerraformFolderToTemp(t, ".", ".")
+	tempTestFolder := test_structure.CopyTerraformFolderToTemp(t, "..", ".")
 
 	terraformOptions := &terraform.Options{
 		TerraformDir: tempTestFolder,
