@@ -50,7 +50,7 @@ output "sas" {
 }
 ```
 
-All possible options are documented in the [Terraform Registry](https://registry.terraform.io/modules/datarootsio/azure-storage-sas/module/?tab=inputs).
+All available options are documented in the [Terraform Registry](https://registry.terraform.io/modules/datarootsio/azure-storage-sas/module/?tab=inputs).
 
 ## License
 
