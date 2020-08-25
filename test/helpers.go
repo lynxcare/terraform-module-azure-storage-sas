@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/to"
 )
 
-func tryBlobUpload(name string, blobEndpoint string, sasToken string, ctx context.Context) error {
+func tryBlobUpload(ctx context.Context, name string, blobEndpoint string, sasToken string) error {
 	data := []byte("hello world this is a blob\n")
 	fileName := "testblob_" + name
 	err := ioutil.WriteFile(fileName, data, 0700)

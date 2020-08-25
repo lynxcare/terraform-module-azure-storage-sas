@@ -76,7 +76,7 @@ func TestRotationEvery3MinutesWith2MinuteMargin(t *testing.T) {
 	assert.NotEmpty(t, sasToken)
 
 	t.Log("Trying blob upload with first SAS token, should succeed")
-	err = tryBlobUpload(name, *blobEndpoint, sasToken, ctx)
+	err = tryBlobUpload(ctx, name, *blobEndpoint, sasToken)
 	assert.NoError(t, err)
 
 	t.Log("Running Terraform apply again")
@@ -92,7 +92,7 @@ func TestRotationEvery3MinutesWith2MinuteMargin(t *testing.T) {
 	time.Sleep(3 * time.Minute)
 
 	t.Log("Trying blob upload with first SAS token, should still work")
-	err = tryBlobUpload(name+"2", *blobEndpoint, sasToken, ctx)
+	err = tryBlobUpload(ctx, name+"2", *blobEndpoint, sasToken)
 	assert.NoError(t, err)
 
 	t.Log("Running Terraform apply again")
@@ -104,10 +104,10 @@ func TestRotationEvery3MinutesWith2MinuteMargin(t *testing.T) {
 	assert.NotEqual(t, sasToken, thirdSasToken)
 
 	t.Log("Trying blob upload with third SAS token, should succeed")
-	err = tryBlobUpload(name+"3", *blobEndpoint, thirdSasToken, ctx)
+	err = tryBlobUpload(ctx, name+"3", *blobEndpoint, thirdSasToken)
 	assert.NoError(t, err)
 
 	t.Log("Trying blob upload with first SAS token, should not work anymore")
-	err = tryBlobUpload(name+"4", *blobEndpoint, sasToken, ctx)
+	err = tryBlobUpload(ctx, name+"4", *blobEndpoint, sasToken)
 	assert.Error(t, err)
 }

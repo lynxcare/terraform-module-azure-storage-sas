@@ -11,6 +11,7 @@ Note that you should run `terraform apply` to actually rotate the token when nee
 [![Terraform 0.13](https://img.shields.io/badge/terraform-0.13-%23623CE4)](https://www.terraform.io)
 [![Terraform Registry](https://img.shields.io/badge/terraform-registry-%23623CE4)](https://registry.terraform.io/modules/datarootsio/azure-storage-sas/module)
 [![build](https://github.com/datarootsio/terraform-module-azure-storage-sas/workflows/build/badge.svg)](https://github.com/datarootsio/terraform-module-azure-storage-sas/actions?query=workflow%3Abuild)
+[![Go Report Card](https://goreportcard.com/badge/github.com/datarootsio/terraform-module-azure-storage-sas)](https://goreportcard.com/report/github.com/datarootsio/terraform-module-azure-storage-sas)
 
 ## Usage
 
