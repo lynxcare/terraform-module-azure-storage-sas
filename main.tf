@@ -3,7 +3,7 @@ provider "azurerm" {
 }
 
 resource "time_static" "start" {
-  rfc3339 = coalesce(var.start, timestamp())
+  rfc3339 = var.start
 }
 
 resource "time_rotating" "end" {
@@ -61,16 +61,5 @@ data "azurerm_storage_account_blob_container_sas" "sas" {
     list   = true
     read   = true
     write  = var.write
-  }
-}
-
-resource "null_resource" "rotation" {
-  triggers = {
-    start_time = time_static.start.rfc3339
-    end_time   = local.expiration
-  }
-
-  inputs = {
-    sas = var.storage_container_name == null || var.storage_container_name == "" ? data.azurerm_storage_account_sas.sas[0].sas : data.azurerm_storage_account_blob_container_sas.sas[0].sas
   }
 }

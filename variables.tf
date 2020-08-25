@@ -45,6 +45,7 @@ variable "rotation_margin" {
     condition     = can(timeadd(timestamp(), var.rotation_margin))
     error_message = "The rotation_margin argument requires a valid duration."
   }
+  description = "Margin to set on the validity of the SAS token. The SAS token remains valid for this duration after the moment that the rotation should take place. Syntax is the same as the timeadd() function."
 }
 
 variable "write" {
