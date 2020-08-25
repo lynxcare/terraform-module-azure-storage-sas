@@ -1,4 +1,4 @@
-name: "build"
+name: build
 on:
   push:
     branches:
@@ -8,10 +8,16 @@ on:
       - master
 env:
   slack_channel: terraform-module-azure-storage-sas
+  golangci_lint_version: "v1.26"
 jobs:
   validate:
-    name: "Validate and publish"
+    name: Validate and publish
     runs-on: ubuntu-latest
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
     steps:
 
       - id: slack
@@ -23,7 +29,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-      - name: "Checkout"
+      - name: Checkout
         uses: actions/checkout@master
 
       - name: Terraform Init
@@ -37,6 +43,18 @@ jobs:
 
       - name: tflint
         run: docker run --rm -v $(pwd):/data -t wata727/tflint
+
+      - name: go vet
+        run: go vet ./...
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v1
+        with:
+          args: --timeout=3m0s
+          version: ${{ env.golangci_lint_version }}
+
+      - name: go test
+        run: go test ./...
 
       - name: Bump version and push tag
         if: github.event_name != 'pull_request'
