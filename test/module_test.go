@@ -109,6 +109,9 @@ func TestRotationEvery3MinutesWith2MinuteMargin(t *testing.T) {
 	err = tryBlobUpload(ctx, fileName+"3", containerName, *blobEndpoint, thirdSasToken)
 	assert.NoError(t, err)
 
+	t.Log("Sleep for 2 minutes")
+	time.Sleep(2 * time.Minute)
+
 	t.Log("Trying blob upload with first SAS token, should not work anymore")
 	err = tryBlobUpload(ctx, fileName+"4", containerName, *blobEndpoint, sasToken)
 	assert.Error(t, err)
