@@ -1,11 +1,5 @@
 name: build
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+on: push
 env:
   slack_channel: terraform-module-azure-storage-sas
   golangci_lint_version: "v1.26"
@@ -22,6 +16,7 @@ jobs:
 
       - id: slack
         uses: voxmedia/github-action-slack-notify-build@v1
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
         with:
           channel: ${{ env.slack_channel }}
           status: STARTED
@@ -55,9 +50,10 @@ jobs:
 
       - name: go test
         run: go test ./...
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
 
       - name: Bump version and push tag
-        if: github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/master'
         uses: anothrNick/github-tag-action@1.22.0
         env:
           DEFAULT_BUMP: patch
@@ -67,7 +63,7 @@ jobs:
         id: bump_version
 
       - id: slack-success
-        if: success()
+        if: success() && github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: ${{ env.slack_channel }}
@@ -78,7 +74,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - id: slack-failure
-        if: failure()
+        if: failure() && github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: ${{ env.slack_channel }}
