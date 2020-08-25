@@ -8,5 +8,9 @@ terraform {
       source  = "hashicorp/time"
       version = ">= 0.5.0"
     }
+    null = {
+      source  = "mildred/null"
+      version = "1.1.0"
+    }
   }
 }
