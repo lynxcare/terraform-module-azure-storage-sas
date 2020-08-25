@@ -35,14 +35,16 @@ func TestRotationEvery3MinutesWith2MinuteMargin(t *testing.T) {
 	name := strings.ToLower(random.UniqueId())
 	accountName := "sa" + name
 	groupName := "rg" + name
+	containerName := "c" + name
+	fileName := "testblob"
 
 	ctx := context.Background()
 
-	t.Logf("Creating storage account %s & container %s", accountName, name)
-	container, blobEndpoint, err := setupStorageContainer(ctx, name, accountName, groupName, region, subscriptionID, clientID, clientSecret, tenantID)
+	t.Logf("Creating storage account %s & container %s", accountName, containerName)
+	container, blobEndpoint, err := setupStorageContainer(ctx, containerName, accountName, groupName, region, subscriptionID, clientID, clientSecret, tenantID)
 	assert.NoError(t, err)
 	assert.NotNil(t, container)
-	t.Logf("Created storage account %s and container %s", accountName, name)
+	t.Logf("Created storage account %s and container %s", accountName, containerName)
 
 	defer func() {
 		t.Log("Destroying resource group")
@@ -76,7 +78,7 @@ func TestRotationEvery3MinutesWith2MinuteMargin(t *testing.T) {
 	assert.NotEmpty(t, sasToken)
 
 	t.Log("Trying blob upload with first SAS token, should succeed")
-	err = tryBlobUpload(ctx, name, *blobEndpoint, sasToken)
+	err = tryBlobUpload(ctx, fileName, containerName, *blobEndpoint, sasToken)
 	assert.NoError(t, err)
 
 	t.Log("Running Terraform apply again")
@@ -92,7 +94,7 @@ func TestRotationEvery3MinutesWith2MinuteMargin(t *testing.T) {
 	time.Sleep(3 * time.Minute)
 
 	t.Log("Trying blob upload with first SAS token, should still work")
-	err = tryBlobUpload(ctx, name+"2", *blobEndpoint, sasToken)
+	err = tryBlobUpload(ctx, fileName+"2", containerName, *blobEndpoint, sasToken)
 	assert.NoError(t, err)
 
 	t.Log("Running Terraform apply again")
@@ -104,10 +106,10 @@ func TestRotationEvery3MinutesWith2MinuteMargin(t *testing.T) {
 	assert.NotEqual(t, sasToken, thirdSasToken)
 
 	t.Log("Trying blob upload with third SAS token, should succeed")
-	err = tryBlobUpload(ctx, name+"3", *blobEndpoint, thirdSasToken)
+	err = tryBlobUpload(ctx, fileName+"3", containerName, *blobEndpoint, thirdSasToken)
 	assert.NoError(t, err)
 
 	t.Log("Trying blob upload with first SAS token, should not work anymore")
-	err = tryBlobUpload(ctx, name+"4", *blobEndpoint, sasToken)
+	err = tryBlobUpload(ctx, fileName+"4", containerName, *blobEndpoint, sasToken)
 	assert.Error(t, err)
 }

@@ -15,9 +15,8 @@ import (
 	"github.com/Azure/go-autorest/autorest/to"
 )
 
-func tryBlobUpload(ctx context.Context, name string, blobEndpoint string, sasToken string) error {
+func tryBlobUpload(ctx context.Context, fileName string, containerName string, blobEndpoint string, sasToken string) error {
 	data := []byte("hello world this is a blob\n")
-	fileName := "testblob_" + name
 	err := ioutil.WriteFile(fileName, data, 0700)
 	if err != nil {
 		return err
@@ -30,7 +29,7 @@ func tryBlobUpload(ctx context.Context, name string, blobEndpoint string, sasTok
 
 	blobP := azblob.NewPipeline(azblob.NewAnonymousCredential(), azblob.PipelineOptions{})
 
-	URL, err := url.Parse(blobEndpoint + name + "/" + fileName + sasToken)
+	URL, err := url.Parse(blobEndpoint + containerName + "/" + fileName + sasToken)
 	if err != nil {
 		return err
 	}
