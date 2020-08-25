@@ -2,12 +2,8 @@ provider "azurerm" {
   features {}
 }
 
-resource "time_static" "start" {
-  rfc3339 = var.start
-}
-
 resource "time_rotating" "end" {
-  rfc3339          = time_static.start.rfc3339
+  rfc3339          = var.start
   rotation_days    = var.rotation_days
   rotation_hours   = var.rotation_hours
   rotation_minutes = var.rotation_minutes
@@ -24,7 +20,7 @@ data "azurerm_storage_account_sas" "sas" {
   count             = var.storage_container_name == null || var.storage_container_name == "" ? 1 : 0
   connection_string = data.azurerm_storage_account.sa.primary_connection_string
   expiry            = local.expiration
-  start             = time_static.start.rfc3339
+  start             = local.start
   permissions {
     add     = var.write
     create  = var.write
@@ -53,7 +49,7 @@ data "azurerm_storage_account_blob_container_sas" "sas" {
   connection_string = data.azurerm_storage_account.sa.primary_blob_connection_string
   container_name    = var.storage_container_name
   expiry            = local.expiration
-  start             = time_static.start.rfc3339
+  start             = local.start
   permissions {
     add    = var.write
     create = var.write
