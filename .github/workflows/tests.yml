@@ -60,7 +60,7 @@ jobs:
         id: bump_version
 
       - id: slack-success
-        if: success() && github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
+        if: success() && (github.event_name == 'pull_request' || github.ref == 'refs/heads/master')
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: ${{ env.slack_channel }}
@@ -71,7 +71,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - id: slack-failure
-        if: failure() && github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
+        if: failure() && (github.event_name == 'pull_request' || github.ref == 'refs/heads/master')
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: ${{ env.slack_channel }}
