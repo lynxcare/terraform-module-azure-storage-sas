@@ -1,6 +1,8 @@
 package test
 
 import (
+	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
@@ -53,6 +55,16 @@ func TestRotationEvery3MinutesWith2MinuteMargin(t *testing.T) {
 	}()
 
 	tempTestFolder := test_structure.CopyTerraformFolderToTemp(t, "..", ".")
+	files, err := ioutil.ReadDir(tempTestFolder)
+	assert.NoError(t, err)
+
+	for _, f := range files {
+		fileName := f.Name()
+		if strings.Contains(fileName, ".tf.tests") {
+			err := os.Rename(fmt.Sprintf("%s/%s", tempTestFolder, fileName), fmt.Sprintf("%s/%s", tempTestFolder, strings.Replace(fileName, ".tf.tests", ".tf", 1)))
+			assert.NoError(t, err)
+		}
+	}
 
 	terraformOptions := &terraform.Options{
 		TerraformDir: tempTestFolder,

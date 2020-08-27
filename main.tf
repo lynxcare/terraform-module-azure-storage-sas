@@ -1,7 +1,3 @@
-provider "azurerm" {
-  features {}
-}
-
 resource "time_rotating" "end" {
   rfc3339          = var.start
   rotation_days    = var.rotation_days
