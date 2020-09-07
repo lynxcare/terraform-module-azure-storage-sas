@@ -46,7 +46,7 @@ jobs:
           version: ${{ env.golangci_lint_version }}
 
       - name: go test
-        run: go test ./...
+        run: go test -timeout "1h" ./...
         if: github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
 
       - name: Bump version and push tag
