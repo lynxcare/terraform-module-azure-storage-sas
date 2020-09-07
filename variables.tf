@@ -1,10 +1,10 @@
 variable "start" {
   description = "Start of SAS token validity. Defaults to now."
   type        = string
-//  validation {
-//    condition     = can(formatdate("", coalesce(var.start, timestamp())))
-//    error_message = "The start argument requires a valid RFC 3339 timestamp."
-//  }
+  //  validation {
+  //    condition     = can(formatdate("", coalesce(var.start, timestamp())))
+  //    error_message = "The start argument requires a valid RFC 3339 timestamp."
+  //  }
   default = null
 }
 
@@ -41,10 +41,10 @@ variable "rotation_years" {
 variable "rotation_margin" {
   type    = string
   default = "24h"
-//  validation {
-//    condition     = can(timeadd(timestamp(), var.rotation_margin))
-//    error_message = "The rotation_margin argument requires a valid duration."
-//  }
+  //  validation {
+  //    condition     = can(timeadd(timestamp(), var.rotation_margin))
+  //    error_message = "The rotation_margin argument requires a valid duration."
+  //  }
   description = "Margin to set on the validity of the SAS token. The SAS token remains valid for this duration after the moment that the rotation should take place. Syntax is the same as the timeadd() function."
 }
 
