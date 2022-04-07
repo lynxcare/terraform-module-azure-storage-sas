@@ -26,6 +26,8 @@ data "azurerm_storage_account_sas" "sas" {
     read    = true
     update  = var.write
     write   = var.write
+    tag     = var.write
+    filter  = false
   }
   resource_types {
     container = true
