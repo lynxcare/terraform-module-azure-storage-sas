@@ -17,6 +17,7 @@ data "azurerm_storage_account_sas" "sas" {
   connection_string = data.azurerm_storage_account.sa.primary_connection_string
   expiry            = local.expiration
   start             = local.start
+  signed_version    = var.signed_version
   permissions {
     add     = var.write
     create  = var.write
