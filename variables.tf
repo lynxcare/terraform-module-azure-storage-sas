@@ -69,8 +69,3 @@ variable "storage_container_name" {
   type        = string
   default     = null
 }
-
-variable "depends_on" {
-  description= "Variable to replace depends_on."
-  default= ""
-}
