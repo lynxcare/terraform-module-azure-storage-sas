@@ -26,8 +26,9 @@ data "azurerm_storage_account_sas" "sas" {
     read    = true
     update  = var.write
     write   = var.write
-    tag     = var.write
-    filter  = true
+    # https://github.com/hashicorp/terraform-provider-azurerm/issues/17558
+    # tag     = var.write
+    # filter  = true
   }
   resource_types {
     container = true
