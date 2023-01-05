@@ -75,3 +75,9 @@ variable "signed_version" {
   type        = string
   default     = "2017-07-29"
 }
+
+variable "triggers" {
+  description = "Arbitrary map of values that, when changed, will trigger the creation of a new SAS token."
+  type        = map(string)
+  default     = null
+}
