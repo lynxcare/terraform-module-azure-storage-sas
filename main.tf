@@ -5,6 +5,7 @@ resource "time_rotating" "end" {
   rotation_minutes = var.rotation_minutes
   rotation_months  = var.rotation_months
   rotation_years   = var.rotation_years
+  triggers         = var.triggers
 }
 
 data "azurerm_storage_account" "sa" {
@@ -28,8 +29,8 @@ data "azurerm_storage_account_sas" "sas" {
     update  = var.write
     write   = var.write
     # https://github.com/hashicorp/terraform-provider-azurerm/issues/17558
-    tag     = false
-    filter  = false
+    tag    = false
+    filter = false
   }
   resource_types {
     container = true
